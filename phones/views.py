@@ -1,3 +1,10 @@
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializers import UserSerializer, GroupSerializer, EntrySerializers
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
 import logging
 
 import weasyprint
@@ -63,7 +70,7 @@ def find_entry(request):
     Finds a phonebook entry
     """
     phone_number = request.GET.get('num', None)
-    type_search = request.GET.get('type_search', None)
+    type_search = request.GET.get('type_search')
     qs = None
 
     if not phone_number:
@@ -115,3 +122,41 @@ class PrintPhoneNumber(DetailView):
         response = HttpResponse(pdf, content_type='application/pdf')
         logger.info("Your print PDF mode is working")
         return response
+
+
+"""
+REST Views
+"""
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+@csrf_exempt
+def entry_list(request):
+    if request.method == 'GET':
+        entries = request.objects.all()
+        entry_serializers = EntrySerializers(entries, many=True)
+        return JsonResponse(entry_serializers.data, safe=False)
+
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        entry_serializers = EntrySerializers(data=data)
+        if entry_serializers.is_valid():
+            return JsonResponse(entry_serializers.data, status=201)
+        return JsonResponse(entry_serializers.errors, status=400)

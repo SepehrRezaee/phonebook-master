@@ -14,14 +14,15 @@
                 <form>
                     <label for="query">{% trans 'لطفا عدد مورد نظر خود را وارد نمایید' %}</label>
                     <input type="text" id="query">
-                    <button class="btn btn-outline-dark" id="search-btn">🔎</button>
+                    <button type="submit" class="btn btn-outline-dark" id="search-btn">🔎</button>
+                    <select class="form-select" aria-label="Default select example">
+                        <option class="type_search" value="contains">{% trans 'شامل شماره تلفن باشد' %}</option>
+                        <option class="type_search" value="startswith">{% trans 'با این عدد شروع شود' %}</option>
+                        <option class="type_search" value="endswith">{% trans 'با این عدد تمام شود' %}</option>
+                        <option class="type_search" value="exact">{% trans 'دقیقا همین عدد باشد' %}</option>
+                    </select>
                 </form>
-                <select class="form-select" aria-label="Default select example">
-                    <option class="type_search" value="contains">{% trans 'شامل شماره تلفن باشد' %}</option>
-                    <option class="type_search" value="startswith">{% trans 'با این عدد شروع شود' %}</option>
-                    <option class="type_search" value="endswith">{% trans 'با این عدد تمام شود' %}</option>
-                    <option class="type_search" value="exact">{% trans 'دقیقا همین عدد باشد' %}</option>
-                </select>
+
             </div>
             <div class="col-7">
                 <table class="table table-dark">
@@ -48,7 +49,7 @@
                 var query_text = $('#query').val();
                 var type_search = $('.type_search').value();
                 var ajax_config = {
-                    url: '{% url 'phones:search' %}',
+                    url: 'find/',
                     data: {
                         num: query_text,
                         type_search: type_search
