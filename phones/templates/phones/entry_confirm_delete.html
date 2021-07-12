@@ -1,0 +1,19 @@
+{% extends 'phones/base.html' %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header_title %}
+    {% trans 'حذف دفترچه تلفن' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete "{{ object }}" contact?</p>
+            <input value="{% trans 'تایید' %}" type="submit" class="btn btn-success">
+            <a href="{% url 'phones:show' %}" class="btn btn-danger">{% trans 'انصراف' %}</a>
+        </form>
+    </div>
+{% endblock %}

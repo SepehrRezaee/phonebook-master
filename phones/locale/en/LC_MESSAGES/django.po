@@ -1,0 +1,172 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-11 14:58+0000\n"
+"PO-Revision-Date: 2021-07-11 19:29+0430\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.3\n"
+
+#: phones/models.py:12
+msgid "صاحب دفترچه"
+msgstr "username"
+
+#: phones/models.py:14
+msgid "زمان ساخت"
+msgstr "created on"
+
+#: phones/models.py:15 phones/templates/phones/entry_detail.html:5
+#: phones/templates/phones/search.html:31
+#: phones/templates/phones/show_phone_book.html:11
+msgid "نام"
+msgstr "First Name"
+
+#: phones/models.py:16 phones/templates/phones/entry_detail.html:6
+#: phones/templates/phones/search.html:32
+#: phones/templates/phones/show_phone_book.html:12
+msgid "نام خانوادگی"
+msgstr "Last Name"
+
+#: phones/models.py:17 phones/templates/phones/entry_detail.html:7
+#: phones/templates/phones/search.html:33
+#: phones/templates/phones/show_phone_book.html:13
+msgid "شماره تلفن"
+msgstr "Phone Number"
+
+#: phones/models.py:23 phones/templates/phones/base.html:6
+msgid "دفترچه تلفن"
+msgstr "phone book"
+
+#: phones/models.py:24
+msgid "دفترچه تلفن ها"
+msgstr "phone books"
+
+#: phones/templates/phones/add_entry.html:7
+msgid "اضافه کردن به دفترچه تلفن"
+msgstr "Add in phone book"
+
+#: phones/templates/phones/add_entry.html:13
+msgid "دفترچه تلفن جدید"
+msgstr "new phone book"
+
+#: phones/templates/phones/add_entry.html:22
+msgid "صاحب دفترچه تلفن:"
+msgstr "username"
+
+#: phones/templates/phones/add_entry.html:25
+msgid "نام:"
+msgstr "first name:"
+
+#: phones/templates/phones/add_entry.html:28
+msgid "نام خانوادگی:"
+msgstr "last name:"
+
+#: phones/templates/phones/add_entry.html:31
+msgid "شماره تلفن:"
+msgstr "phone number:"
+
+#: phones/templates/phones/add_entry.html:34
+#: phones/templates/phones/base.html:22
+msgid "اضافه کردن"
+msgstr "Add"
+
+#: phones/templates/phones/base.html:18
+msgid "صفحه اصلی"
+msgstr "Home"
+
+#: phones/templates/phones/base.html:25
+msgid "جستوجو"
+msgstr "Search"
+
+#: phones/templates/phones/base.html:28
+msgid "خروج"
+msgstr "Logout"
+
+#: phones/templates/phones/base.html:33
+msgid "ورود"
+msgstr "Login"
+
+#: phones/templates/phones/edit_entry.html:7
+msgid "تغییر در دفترچه تلفن"
+msgstr "Change in phone book"
+
+#: phones/templates/phones/edit_entry.html:15
+msgid "اعمال تغییرات"
+msgstr "Update"
+
+#: phones/templates/phones/entry_confirm_delete.html:7
+msgid "حذف دفترچه تلفن"
+msgstr "Delete phone book"
+
+#: phones/templates/phones/entry_confirm_delete.html:15
+msgid "تایید"
+msgstr "Accept"
+
+#: phones/templates/phones/entry_confirm_delete.html:16
+msgid "انصراف"
+msgstr "Cancel"
+
+#: phones/templates/phones/search.html:6 phones/templates/phones/search.html:11
+msgid "جستوجو در دفترچه تلفن"
+msgstr "Search in phone book"
+
+#: phones/templates/phones/search.html:15
+msgid "لطفا عدد مورد نظر خود را وارد نمایید"
+msgstr "Please enter your number"
+
+#: phones/templates/phones/search.html:20
+msgid "شامل شماره تلفن باشد"
+msgstr "contains"
+
+#: phones/templates/phones/search.html:21
+msgid "با این عدد شروع شود"
+msgstr "startswith"
+
+#: phones/templates/phones/search.html:22
+msgid "با این عدد تمام شود"
+msgstr "endswith"
+
+#: phones/templates/phones/search.html:23
+msgid "دقیقا همین عدد باشد"
+msgstr "exact"
+
+#: phones/templates/phones/show_phone_book.html:14
+msgid "صاحب دفترچه تلفن"
+msgstr "Created by"
+
+#: phones/templates/phones/show_phone_book.html:15
+msgid "عملیات ها"
+msgstr "Actions"
+
+#: phones/templates/phones/show_phone_book.html:28
+msgid "چاپ"
+msgstr "Print"
+
+#: phones/templates/phones/show_phone_book.html:31
+msgid "ایجاد تغییرات"
+msgstr "Edit"
+
+#: phones/templates/phones/show_phone_book.html:34
+msgid "حذف"
+msgstr "Delete"
+
+#: phones/templates/phones/show_phone_book.html:43
+msgid "لطفا ابتدا وارد شوید"
+msgstr "Please at first login"
+
+#~ msgid "دفترچه تلفن با موفقیت حذف شد"
+#~ msgstr "Phone book was successfully deleted"
+
+#~ msgid "تغییرات"
+#~ msgstr "Edits"

@@ -1,0 +1,37 @@
+{% extends 'phones/base.html' %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header_title %}
+    {% trans 'اضافه کردن به دفترچه تلفن' %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h2>{% trans 'دفترچه تلفن جدید' %}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {#            {{ form.username }}#}
+{#            {% for people in form.username %}#}
+{#                {% if people is not requst.user %}#}
+{#                    {{ form.username.remove(people) }}#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+            {% trans 'صاحب دفترچه تلفن:' %}
+            {{ form.username }}
+            <br><br>
+            {% trans 'نام:' %}
+            {{ form.first_name }}
+            <br><br>
+            {% trans 'نام خانوادگی:' %}
+            {{ form.last_name }}
+            <br><br>
+            {% trans 'شماره تلفن:' %}
+            {{ form.phone_number }}
+            <br><br>
+            <button type="submit" class="btn btn-outline-success" id="send-form">{% trans 'اضافه کردن' %}</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'phones/base.html' %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header_title %}
+    {% trans 'ورود' %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h2>{% trans 'لطفا وارد شوید' %}</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-outline-success" id="send-form">{% trans 'ورود' %}</button>
+        </form>
+    </div>
+{% endblock %}

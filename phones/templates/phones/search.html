@@ -1,0 +1,72 @@
+{% extends 'phones/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header_title %}
+    {% trans 'جستوجو در دفترچه تلفن' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>{% trans 'جستوجو در دفترچه تلفن' %}</h2>
+        <div class="row">
+            <div class="col-5">
+                <form>
+                    <label for="query">{% trans 'لطفا عدد مورد نظر خود را وارد نمایید' %}</label>
+                    <input type="text" id="query">
+                    <button class="btn btn-outline-dark" id="search-btn">🔎</button>
+                </form>
+                <select class="form-select" aria-label="Default select example">
+                    <option class="type_search" value="contains">{% trans 'شامل شماره تلفن باشد' %}</option>
+                    <option class="type_search" value="startswith">{% trans 'با این عدد شروع شود' %}</option>
+                    <option class="type_search" value="endswith">{% trans 'با این عدد تمام شود' %}</option>
+                    <option class="type_search" value="exact">{% trans 'دقیقا همین عدد باشد' %}</option>
+                </select>
+            </div>
+            <div class="col-7">
+                <table class="table table-dark">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">{% trans 'نام' %}</th>
+                        <th scope="col">{% trans 'نام خانوادگی' %}</th>
+                        <th scope="col">{% trans 'شماره تلفن' %}</th>
+                    </tr>
+                    </thead>
+                    <tbody id="output-div">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#search-btn').click(function () {
+                var query_text = $('#query').val();
+                var type_search = $('.type_search').value();
+                var ajax_config = {
+                    url: '{% url 'phones:search' %}',
+                    data: {
+                        num: query_text,
+                        type_search: type_search
+                    },
+                    method: 'get',
+                    success: function (response) {
+                        var my_output_div = $('#output-div');
+                        my_output_div.empty();
+                        $(response.results).each(function (index, obj) {
+                            var my_table = '<tr><th scope="row">' + (index + 1) + '</th>' +
+                                '<td>' + obj.first_name + '</td><td>' + obj.last_name + '</td>' +
+                                '<td>' + obj.phone_number + '</td></tr>';
+                            my_output_div.append(my_table);
+                        });
+                    }
+                };
+                $.ajax(ajax_config);
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'phones/base.html' %}
+{% load i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% block content %}
+    <div class="container">
+        {% if user.is_authenticated %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{% trans 'نام' %}</th>
+                    <th scope="col">{% trans 'نام خانوادگی' %}</th>
+                    <th scope="col">{% trans 'شماره تلفن' %}</th>
+                    <th scope="col">{% trans 'صاحب دفترچه تلفن' %}</th>
+                    <th scope="col">{% trans 'عملیات ها' %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for phones in object_list %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ phones.first_name }}</td>
+                        <td>{{ phones.last_name }}</td>
+                        <td>{{ phones.phone_number }}</td>
+                        <td>{{ phones.username }}</td>
+                        <td>
+                            <a href="{% url 'phones:print-phone' phones.pk %}" class="btn btn-primary">
+                                <i class="fa f044">{% trans 'چاپ' %}</i>
+                            </a>
+                            <a href="{% url 'phones:edit' phones.pk %}" class="btn btn-primary">
+                                <i class="fa f044">{% trans 'ایجاد تغییرات' %}</i>
+                            </a>
+                            <a href="{% url 'phones:delete' phones.pk %}" class="btn btn-primary">
+                                <i class="fa f044">{% trans 'حذف' %}</i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if not user.is_authenticated %}
+            {% trans 'لطفا ابتدا وارد شوید' %}
+        {% endif %}
+    </div>
+{% endblock %}

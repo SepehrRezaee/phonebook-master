@@ -1,0 +1,18 @@
+{% extends 'phones/base.html' %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header_title %}
+    {% trans 'تغییر در دفترچه تلفن' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-outline-success" id="send-form">{% trans 'اعمال تغییرات' %}</button>
+        </form>
+    </div>
+{% endblock %}
