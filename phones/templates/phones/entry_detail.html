@@ -8,10 +8,12 @@
     </tr>
   </thead>
   <tbody>
+  {% for object in object_list %}
     <tr>
         <td>{{ object.first_name }}</td>
         <td>{{ object.last_name }}</td>
         <td>{{ object.phone_number }}</td>
     </tr>
+  {% endfor %}
   </tbody>
 </table>

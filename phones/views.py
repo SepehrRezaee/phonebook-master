@@ -1,10 +1,7 @@
-from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from rest_framework import permissions
-from .serializers import UserSerializer, GroupSerializer, EntrySerializers
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
+from rest_framework import generics, viewsets, permissions, mixins
+from rest_framework.permissions import IsAuthenticated
+
+# from .serializers import EntrySerializers
 import logging
 
 import weasyprint
@@ -18,6 +15,7 @@ from django.views.generic import DetailView, ListView, CreateView, UpdateView, D
 from . import models
 from .forms import EntryForm
 from .models import Entry
+from .serializers import EntrySerializers
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +27,10 @@ class ShowPhoneNumbers(ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
+            logger.info(f'{self.request.user} is authenticated')
             return Entry.objects.filter(username=self.request.user)
+        if not self.request.user.is_authenticated:
+            logger.warning("Didn't login")
 
 
 class AddPhoneNumber(LoginRequiredMixin, CreateView):
@@ -46,6 +47,8 @@ class AddPhoneNumber(LoginRequiredMixin, CreateView):
 
     def get_queryset(self):
         qs = self.request.user
+        logger.info(
+            f'a contact in the name {self.request.first_name} {self.request.last_name} is added to phone book by {self.request.user};')
         return require_GET.usename.filter(username=qs)
 
 
@@ -56,6 +59,8 @@ class UpdatePhoneBook(UpdateView):
 
     def get_queryset(self):
         queryset = Entry.objects.all()
+        logger.warning(
+            f'a contact is edited by {self.request.user};')
         return queryset
 
 
@@ -71,6 +76,7 @@ def find_entry(request):
     """
     phone_number = request.GET.get('num', None)
     type_search = request.GET.get('type_search')
+    print("type_search", type_search)
     qs = None
 
     if not phone_number:
@@ -78,12 +84,16 @@ def find_entry(request):
 
     if type_search == 'contains':
         qs = Entry.objects.filter(phone_number__contains=phone_number, )
+        print(type_search)
     if type_search == 'startswith':
         qs = Entry.objects.filter(phone_number__startswith=phone_number)
+        print(type_search)
     if type_search == 'endswith':
         qs = Entry.objects.filter(phone_number__endswith=phone_number)
+        print(type_search)
     if type_search == 'exact':
         qs = Entry.objects.filter(phone_number__exact=phone_number)
+        print(type_search)
 
     request.session['action'] = [f'search type: {type_search}\nnumber search: {phone_number}']
     print(qs)
@@ -107,6 +117,22 @@ def show_search_form(request):
     return render(request, 'phones/search.html')
 
 
+"""
+DRF Views
+"""
+
+
+class PhoneBookViewSets(mixins.CreateModelMixin, mixins.ListModelMixin,
+                        viewsets.GenericViewSet):
+    queryset = Entry.objects.all()
+    serializer_class = EntrySerializers
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        qs = Entry.objects.filter(username=self.request.user)
+        return qs
+
+
 class PrintPhoneNumber(DetailView):
     model = models.Entry
 
@@ -123,40 +149,34 @@ class PrintPhoneNumber(DetailView):
         logger.info("Your print PDF mode is working")
         return response
 
-
-"""
-REST Views
-"""
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class PhoneNumberShow(generics.ListAPIView):
+#     queryset = models.Entry.objects.all()
+#     serializer_class = EntrySerializers
+#     permission_classes = [IsAuthenticated]
+#
+#     def get_queryset(self):
+#         qs = super().get_queryset()
+#         qs = qs.filter(username=self.request.user)
+#         return qs
+#
+#
+# class PhoneNumberCreate(generics.CreateAPIView):
+#     queryset = models.Entry.objects.all()
+#     serializer_class = EntrySerializers
+#     permission_classes = [IsAuthenticated]
+#
+#
+# class PhoneNumberUpdate(generics.UpdateAPIView):
+#     queryset = models.Entry.objects.all()
+#     serializer_class = EntrySerializers
 
 
-@csrf_exempt
-def entry_list(request):
-    if request.method == 'GET':
-        entries = request.objects.all()
-        entry_serializers = EntrySerializers(entries, many=True)
-        return JsonResponse(entry_serializers.data, safe=False)
-
-    if request.method == 'POST':
-        data = JSONParser().parse(request)
-        entry_serializers = EntrySerializers(data=data)
-        if entry_serializers.is_valid():
-            return JsonResponse(entry_serializers.data, status=201)
-        return JsonResponse(entry_serializers.errors, status=400)
+# class PhoneNumberUpdate(generics.ListCreateAPIView):
+#     queryset = models.Entry.objects.all()
+#     serializer_class = EntrySerializers
+#     permission_classes = [IsAuthenticated]
+#
+#     def partial_update(self, request):
+#         queryset = self.get_queryset()
+#         serializer = EntrySerializers(queryset, many=True)
+#         return Response(serializer.data)

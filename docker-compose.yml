@@ -1,0 +1,17 @@
+version: "3.9"
+volumes:
+  StoreDbData:
+services:
+  database:
+    image: "postgres:14beta2-buster"
+    ports:
+    - 5432:5432
+    environment:
+      POSTGRES_USER: sepehr_store
+      POSTGRES_PASSWORD: sepehr007
+      PGPASSWORD: sepehr007
+      POSTGRES_DB: maktab_store
+      PGDATA: /db_data
+    volumes:
+    - StoreDbData:/db_data
+

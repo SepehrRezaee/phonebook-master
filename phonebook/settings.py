@@ -17,7 +17,6 @@ import phones
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -28,7 +27,6 @@ SECRET_KEY = 'django-insecure-tf_)^(jpr!@)^iq@dc1e3u!yz22nx@!e7e1oa9re-0xh#^i)29
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -42,7 +40,7 @@ INSTALLED_APPS = [
 
     'widget_tweaks',
     'rest_framework',
-    
+
     'phones',
     'users',
 ]
@@ -78,17 +76,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'phonebook.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'maktab_store',
+        'USER': 'sepehr_store',
+        'PASSWORD': 'sepehr007',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -108,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -123,7 +124,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -134,50 +134,55 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+ADMINS = [('Sepehr', 'sepehrrezaee2002@gmil.com')]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        # Key first_name is defined by us
+        'verbose': {
+            # These keys are defined by python/django
+            # There are a couple of pre-defined palce-holders
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'required_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'filters': ['required_debug_true'],
+            'formatter': 'verbose'
+        },
+        # 'file_store': {
+        #     'class': 'logging.handlers.RotatingFileHandler',
+        #     'filename': os.path.join(BASE_DIR, 'logs', 'phones.log'),
+        #     'formatter': 'verbose'
+        # }
+    },
+    'loggers': {
+        'root': {
+            'phones': {
+                'handlers': ['console'],
+                'level': 'INFO',
+            },
+        }
+    }
 }
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         # Key first_name is defined by us
-#         'verbose': {
-#             # These keys are defined by python/django
-#             # There are a couple of pre-defined palce-holders
-#             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-#             # 'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-#             'style': '{',
-#         },
-#         'simple': {
-#             'format': '{levelname} {asctime} {message}',
-#             'style': '{',
-#         },
-#     },
-#     'filters': {
-#         'required_debug_true': {
-#             '()': 'django.utils.log.RequireDebugTrue',
-#         }
-#     },
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#             'filters': ['required_debug_true'],
-#         },
-#         'file_store': {
-#             'class': 'logging.handlers.RotatingFileHandler',
-#             'filename': os.path.join(BASE_DIR, 'logs', 'phones.log'),
-#             'formatter': 'simple'
-#         }
-#         },
-#     },
-#     # # Loggers
-#     # 'root': {
-#     #     'phones': {
-#     #         'handlers': ['file_store', 'console'],
-#     #         'level': 'INFO',
-#     #     },
-#     # }
-# }
+EMAIL_BACKEND = 'django_mail_admin.backends.CustomEmailBackend'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}

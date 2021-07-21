@@ -24,9 +24,6 @@
                         <td>{{ phones.phone_number }}</td>
                         <td>{{ phones.username }}</td>
                         <td>
-                            <a href="{% url 'phones:print-phone' phones.pk %}" class="btn btn-primary">
-                                <i class="fa f044">{% trans 'چاپ' %}</i>
-                            </a>
                             <a href="{% url 'phones:edit' phones.pk %}" class="btn btn-primary">
                                 <i class="fa f044">{% trans 'ایجاد تغییرات' %}</i>
                             </a>
@@ -37,6 +34,9 @@
                     </tr>
                 {% endfor %}
                 </tbody>
+{#                <a href="{% url 'phones:print-phone' %}" class="btn btn-primary">#}
+{#                    {% trans 'چاپ' %}#}
+{#                </a>#}
             </table>
         {% endif %}
         {% if not user.is_authenticated %}
