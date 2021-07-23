@@ -1,3 +1,4 @@
 Django~=3.2.5
 WeasyPrint~=52.5
 rest_framework
+django-filter

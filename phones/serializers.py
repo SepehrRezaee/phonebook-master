@@ -4,7 +4,6 @@ from phones.models import Entry
 
 
 class EntrySerializers(serializers.HyperlinkedModelSerializer):
-
     class Meta:
         model = Entry
         fields = [

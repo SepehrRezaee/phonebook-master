@@ -49,7 +49,7 @@
                 var query_text = $('#query').val();
                 var type_search = $('#type_search option:selected').val();
                 var ajax_config = {
-                    url: 'find/',
+                    url: '/find/',
                     data: {
                         num: query_text,
                         type_search: type_search
@@ -64,7 +64,7 @@
                                 '<td>' + obj.phone_number + '</td></tr>';
                             my_output_div.append(my_table);
                         });
-                    }
+                    },
                 };
                 $.ajax(ajax_config);
             });

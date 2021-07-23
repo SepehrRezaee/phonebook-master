@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'phones',
     'users',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -184,5 +185,12 @@ EMAIL_BACKEND = 'django_mail_admin.backends.CustomEmailBackend'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ]
 }

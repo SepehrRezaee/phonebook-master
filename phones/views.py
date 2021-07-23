@@ -11,6 +11,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_GET
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from . import models
 from .forms import EntryForm
@@ -33,17 +36,17 @@ class ShowPhoneNumbers(ListView):
             logger.warning("Didn't login")
 
 
-class AddPhoneNumber(LoginRequiredMixin, CreateView):
-    # form_class = EntryForm
+class AddPhoneNumber(CreateView):
     model = Entry
     template_name = 'phones/add_entry.html'
     success_url = reverse_lazy('phones:show')
-    fields = (
+
+    fields = [
         'username',
         'first_name',
         'last_name',
         'phone_number',
-    )
+    ]
 
     def get_queryset(self):
         qs = self.request.user
@@ -83,16 +86,16 @@ def find_entry(request):
         return JsonResponse({'success': False, 'error': 'No number specified.'}, status=400)
 
     if type_search == 'contains':
-        qs = Entry.objects.filter(phone_number__contains=phone_number, )
+        qs = Entry.objects.filter(phone_number__contains=phone_number, username=request.user)
         print(type_search)
     if type_search == 'startswith':
-        qs = Entry.objects.filter(phone_number__startswith=phone_number)
+        qs = Entry.objects.filter(phone_number__startswith=phone_number, username=request.user)
         print(type_search)
     if type_search == 'endswith':
-        qs = Entry.objects.filter(phone_number__endswith=phone_number)
+        qs = Entry.objects.filter(phone_number__endswith=phone_number, username=request.user)
         print(type_search)
     if type_search == 'exact':
-        qs = Entry.objects.filter(phone_number__exact=phone_number)
+        qs = Entry.objects.filter(phone_number__exact=phone_number, username=request.user)
         print(type_search)
 
     request.session['action'] = [f'search type: {type_search}\nnumber search: {phone_number}']
@@ -122,11 +125,18 @@ DRF Views
 """
 
 
-class PhoneBookViewSets(mixins.CreateModelMixin, mixins.ListModelMixin,
+class PhoneBookViewSets(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
                         viewsets.GenericViewSet):
     queryset = Entry.objects.all()
     serializer_class = EntrySerializers
     permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'pk'
+
+    filter_fields = (
+        'phone_number',
+        'first_name',
+        'last_name',
+    )
 
     def get_queryset(self):
         qs = Entry.objects.filter(username=self.request.user)
